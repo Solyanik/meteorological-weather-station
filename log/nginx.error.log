@@ -1,0 +1,1 @@
+2017/08/07 14:39:03 [error] 19822#19822: *668688 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 77.109.31.235, server: meteorological-weather-station.it-guide.org, request: "GET /ajax?id=2 HTTP/1.1", upstream: "passenger:unix:/tmp/passenger.qKANevP/agents.s/core:", host: "meteorological-weather-station.it-guide.org"

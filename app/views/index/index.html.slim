@@ -1,0 +1,107 @@
+doctype html
+html[ng-app="index"]
+	head
+		title Meteorological Weather Station
+  		== stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+  		== javascript_include_tag 'application', 'data-turbolinks-track' => true
+		== csrf_meta_tags
+
+	body
+
+		.container[ng-controller="main"]
+			data_js_set[ng-init="set_list_mws(#{ @data[:data] });"]
+			
+			h1 Meteorological Weather Station
+
+			.form-inline.form-station
+				.form-group
+					select.form-control#stationSelect[ng-model="data.stationSelect"]
+		      			option[ng-repeat="(key, value) in #{ @stations }" value="{{ key }}"] {{ value }}
+		      			
+	      		input.btn.btn-primary.btn-form-station[type="button" ng-click="filter()" value="Show"]
+	      		img#ajax-loader[src="/assets/ajax-loader.gif"]
+	      	.message-error
+
+			.row-filter
+				.search
+					input[ng-model="data.search" placeholder="Search..."]
+					small.search-result
+						| Found 
+						strong
+							| {{  fData.length }} 
+						| items of data
+
+				.filter-graph.form-inline
+					.checkbox
+						label
+							input[ng-model="line_tmax" type="checkbox" value="1"] Temperature max
+					.checkbox
+						label
+							input[ng-model="line_tmin" type="checkbox" value="1"] Temperature min
+					.checkbox
+						label
+							input[ng-model="line_af" type="checkbox" value="1"] Austenite finish temperature
+					.checkbox
+						label
+							input[ng-model="line_rain" type="checkbox" value="1"] Rain
+
+		    .chart[style="width:{{width}}px; height:{{height}}px;"]
+		    	<!-- Labels -->
+		    	.y[style="width:{{height}}px;"] {{yAxis}}
+		    	.x 
+		    		| {{xAxis}}
+		    	<!-- Data -->
+		    	svg[style="width:{{width}}px; height:{{height}}px;"]
+
+		    		line.tmax[ng-if="line_tmax" ng-repeat="line in list_mws | limitTo : list_mws.length : 2 | filter: data.search as fData" x1="{{ $index / (fData ? fData.length : list_mws.length) * width }}" y1="{{(fData ? fData[$index - 1][2] : list_mws[$index - 1][2]) / max_tmax * height/2}}" x2="{{($index + 1) / (fData ? fData.length : list_mws.length) * width}}" y2="{{line[2] / max_tmax * height/2}}"]
+		        
+		    		line.tmin[ng-if="line_tmin" ng-repeat="line in list_mws | limitTo : list_mws.length : 2 | filter: data.search as fData" x1="{{$index / (fData ? fData.length : list_mws.length) * width }}" y1="{{(fData ? fData[$index - 1][3] : list_mws[$index - 1][3]) / max_tmin * height/2}}" x2="{{($index + 1) / (fData ? fData.length : list_mws.length) * width}}" y2="{{line[3] / max_tmin * height/2}}"]
+		        
+		    		line.af[ng-if="line_af" ng-repeat="line in list_mws | limitTo : list_mws.length : 2 | filter: data.search as fData" x1="{{$index / (fData ? fData.length : list_mws.length) * width }}" y1="{{(fData ? fData[$index - 1][4] : list_mws[$index - 1][4]) / max_af * height/2}}" x2="{{($index + 1) / (fData ? fData.length : list_mws.length) * width}}" y2="{{line[4] / max_af * height/2}}"]
+		        
+		    		line.rain[ng-if="line_rain" ng-repeat="line in list_mws | limitTo : list_mws.length : 2 | filter: data.search as fData" x1="{{$index / (fData ? fData.length : list_mws.length) * width }}" y1="{{(fData ? fData[$index - 1][5] : list_mws[$index - 1][5]) / max_rain * height/2}}" x2="{{($index + 1) / (fData ? fData.length : list_mws.length) * width}}" y2="{{line[5] / max_rain * height/2}}"]
+		        
+			
+
+			.container
+				h2#h2-title-station
+					= @data[:name]
+				table.table
+					thead
+						tr
+							th Year
+							th Month
+							th TMax
+							th TMin
+							th AF
+							th Rain
+							th Sun
+							th 
+					tbody
+						tr
+							td
+							td
+							td degC	
+							td degC
+							td days
+							td mm
+							td hours
+							td
+						tr[ng-repeat="value in list_mws | limitTo : list_mws.length : 2 | filter: data.search"]
+							th 
+								| {{ value[0] }}
+							td
+								| {{ value[1] }}
+							td
+								| {{ value[2] }}
+							td
+								| {{ value[3] }}
+							td
+								| {{ value[4] }}
+							td
+								| {{ value[5] }}
+							td
+								| {{ value[6] }}
+							td
+								| {{ value[7] }}
+					
