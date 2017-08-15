@@ -1,0 +1,56 @@
+body
+  padding: 20px 0
+  h1
+    margin-bottom: 40px
+  .form-station
+    margin-bottom: 20px
+    .btn-form-station
+      margin-left: 10px
+      margin-right: 10px
+    #ajax-loader
+      display: none
+  .row-filter
+    overflow: hidden
+    .search
+      float: left
+      margin-top: 0px
+      small.search-result
+        color: #757575
+        margin-left: 7px
+    .filter-graph
+      margin-top: 5px
+      float: right
+      .checkbox
+        margin: 0 10px
+        input
+          margin-right: 5px
+  .chart
+    border-left: 1px solid black
+    border-bottom: 1px solid black
+    margin: 60px auto
+    position: relative
+    .y
+      position: absolute
+      transform: rotate(-90deg)
+      transform-origin: bottom left
+      bottom: 0
+      padding: 5px
+    .x
+      position: absolute
+      top: 100%
+      width: 100%
+      padding: 5px
+    svg
+      position: absolute
+      transform: rotateX(180deg)
+      left: 0
+      line
+          stroke-width: 1px
+      line.tmax
+        stroke: green
+      line.tmin
+        stroke: blue
+      line.af
+        stroke: black
+      line.rain
+        stroke: purple
